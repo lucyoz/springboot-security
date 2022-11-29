@@ -1,9 +1,7 @@
 package com.example.hospitalreview.controller;
 
 import com.example.hospitalreview.domain.Response;
-import com.example.hospitalreview.domain.dto.UserDto;
-import com.example.hospitalreview.domain.dto.UserJoinRequest;
-import com.example.hospitalreview.domain.dto.UserJoinResponse;
+import com.example.hospitalreview.domain.dto.*;
 import com.example.hospitalreview.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,5 +20,12 @@ public class UserController {
     public Response<UserJoinResponse> join(@RequestBody UserJoinRequest userJoinRequest){
         UserDto userDto = userService.join(userJoinRequest);
         return Response.success(new UserJoinResponse(userDto.getUserName(), userDto.getEmail()));
+    }
+
+    @PostMapping("/login")
+    public Response<UserLoginResponse> login(@RequestBody UserLoginRequest userLoginRequest){
+        String token = userService.login(userLoginRequest.getUserName(), userLoginRequest.getPassword());
+        return Response.success(new UserLoginResponse(token));
+
     }
 }
