@@ -3,6 +3,7 @@ package com.example.hospitalreview.controller;
 import com.example.hospitalreview.HospitalReviewApplication;
 import com.example.hospitalreview.domain.dto.UserDto;
 import com.example.hospitalreview.domain.dto.UserJoinRequest;
+import com.example.hospitalreview.domain.dto.UserLoginRequest;
 import com.example.hospitalreview.exception.ErrorCode;
 import com.example.hospitalreview.exception.HospitalReviewAppException;
 import com.example.hospitalreview.service.UserService;
@@ -118,7 +119,15 @@ class UserControllerTest {
     @DisplayName("로그인 실패 - pw 잘못 입력")
     @WithMockUser
     void login_fail2() throws Exception {
+        when(userService.login(any(), any())).thenThrow(new HospitalReviewAppException(ErrorCode.INVALID_PASSWORD,""));
 
+        // 무엇을 받을까? : NOT_FOUND
+        mockMvc.perform(post("/api/v1/users/login")
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(userJoinRequest)))
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
 
     }
 
@@ -126,7 +135,19 @@ class UserControllerTest {
     @DisplayName("로그인 성공")
     @WithMockUser
     void login_success() throws Exception {
+        String userName = "rr";
+        String password = "q1w2e3";
 
+        when(userService.login(any(), any()))
+                .thenReturn("token");
+
+
+        mockMvc.perform(post("/api/v1/users/login")
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(new UserLoginRequest(userName, password))))
+                .andDo(print())
+                .andExpect(status().isOk());
 
     }
 
