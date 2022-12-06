@@ -57,4 +57,9 @@ public class UserService {
         // 두가지 확인 중 예외 안 났으면 Token 발행
         return JwtTokenUtil.createToken(userName,secreatKey,expireTimeMs);
     }
+
+    public User getUserByUserName(String userName) {
+        return userRepository.findByUserName(userName)
+                .orElseThrow(()->new HospitalReviewAppException(ErrorCode.NOT_FOUND,""));
+    }
 }
