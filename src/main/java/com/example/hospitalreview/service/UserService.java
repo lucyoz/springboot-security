@@ -21,7 +21,7 @@ public class UserService {
 
     @Value("${jwt.token.secret}")
     private String secreatKey;
-    private long expireTimeMs = 1000*60*60;         //1시간동안 유효하다
+    private long expireTimeMs = 1000*60*60l;         //1시간동안 유효하다
 
     public UserDto join(UserJoinRequest userJoinRequest){
         //비즈니스 로직 - 회원가입

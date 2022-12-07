@@ -17,7 +17,7 @@ public class JwtTokenUtil {
     }
 
     public static String getUserName(String token, String key){
-        return extractClaims(token, key).get("userName").toString();
+        return extractClaims(token, key).get("userName",String.class);
     }
 
     public static String createToken(String userName, String key, long expireTimeMs){
