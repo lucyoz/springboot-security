@@ -4,6 +4,7 @@ import com.example.hospitalreview.domain.Hospital;
 import com.example.hospitalreview.domain.User;
 import com.example.hospitalreview.domain.Visit;
 import com.example.hospitalreview.domain.dto.VisitCreateRequest;
+import com.example.hospitalreview.domain.dto.VisitResponse;
 import com.example.hospitalreview.exception.ErrorCode;
 import com.example.hospitalreview.exception.HospitalReviewAppException;
 import com.example.hospitalreview.repository.HospitalRepository;
@@ -11,7 +12,12 @@ import com.example.hospitalreview.repository.ReviewRepository;
 import com.example.hospitalreview.repository.UserRepository;
 import com.example.hospitalreview.repository.VisitRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,5 +45,14 @@ public class VisitService {
                 .build();
         visitRepository.save(visit);
 
+    }
+
+    public List<VisitResponse> findAllByPage(Pageable pageable) {
+        Page<Visit> visits = visitRepository.findAll(pageable);
+
+        // Visits --> VisitResponse
+        return visits.stream()
+                .map(Visit::toResponse)
+                .collect(Collectors.toList());
     }
 }

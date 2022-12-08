@@ -1,5 +1,6 @@
 package com.example.hospitalreview.domain;
 
+import com.example.hospitalreview.domain.dto.VisitResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,4 +29,14 @@ public class Visit {
 
     private String disease;
     private float amount;
+
+    public VisitResponse toResponse() {
+        return VisitResponse.builder()
+                .hospitalName(this.hospital.getHospitalName())
+                .userName(this.user.getUserName())
+                .disease(this.disease)
+                .amount(this.amount)
+                .build();
+    }
+
 }

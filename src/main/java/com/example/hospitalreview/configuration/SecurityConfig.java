@@ -29,9 +29,9 @@ public class SecurityConfig {
                 .csrf().disable()
                 .cors().and()
                 .authorizeRequests()
-                .antMatchers("/api/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/**").permitAll()
                 .antMatchers("/api/v1/users/join", "/api/v1/users/login").permitAll() // join, login은 언제나 가능
-                .antMatchers(HttpMethod.POST,"/api/v1/**").authenticated() //접근요청 막기: POST요청을 막는다, 문 열어주기
+                .antMatchers(HttpMethod.POST,"/api/**").authenticated() //접근요청 막기: POST요청을 막는다, 문 열어주기
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // jwt사용하는 경우 씀
